@@ -11,13 +11,8 @@ namespace TechnicalAssesment.POMPages
 {
     static class BasePage
     {
-        
         public static IWebDriver driver = new ChromeDriver();
-        public static void NavigateToUrl(string url)
-        {
-            driver.Navigate().GoToUrl(url);
-        }
-
+        public static WebDriverWait wait = new WebDriverWait(BasePage.driver, TimeSpan.FromSeconds(10));
         public static void AcceptAlert()
         {
             driver.SwitchTo().Alert().Accept();
@@ -33,7 +28,7 @@ namespace TechnicalAssesment.POMPages
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(seconds);
         }
 
-        //public void setExplicitWait(By locator, int seconds)
+        //public static void setExplicitWait(By locator, int seconds)
         //{
         //    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
         //    wait.Until(ExpectedConditions.ElementIsVisible(locator));

@@ -1,4 +1,6 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +11,26 @@ namespace TechnicalAssesment.POMPages
 {
     class LoginPage
     {
-        IWebElement btnCustLogin = BasePage.driver.FindElement(By.XPath("//button[text()= 'Customer Login']"));
-        IWebElement btnBankMgrLogin = BasePage.driver.FindElement(By.XPath("//button[text()= 'Manager Login']"));
+        [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Customer Login')]")]
+        IWebElement _btnCustLogin;
 
+        [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Bank Manager Login')]")]
+        IWebElement _btnManagerLogin;
+
+        public LoginPage()
+        {
+            PageFactory.InitElements(BasePage.driver, this);
+        }
         public void loginCust()
         {
-            btnCustLogin.Click();
+            BasePage.setImplicitWait(1);
+            _btnCustLogin.Click();
         }
 
         public void bankMgrLogin()
         {
-            btnBankMgrLogin.Click();
+            BasePage.setImplicitWait(1);
+            _btnManagerLogin.Click();
         }
     }
 }
