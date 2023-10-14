@@ -36,6 +36,7 @@ namespace TechnicalAssesment
 
             loginPage.bankMgrLogin();
 
+            // Change fileLocation to your local path
             string fileLocation = "C:\\Users\\andre\\source\\repos\\TechnicalAssesment\\CsvFiles\\Customers.csv";
             using (var reader = new StreamReader(fileLocation))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
@@ -78,6 +79,7 @@ namespace TechnicalAssesment
             int balanceFromExcel = 0;
             int balanceFromAccount = 0;
 
+            // Change fileLocation to your local path
             string fileLocation = "C:\\Users\\andre\\source\\repos\\TechnicalAssesment\\CsvFiles\\Transactions.csv";
             using (var reader = new StreamReader(fileLocation))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
