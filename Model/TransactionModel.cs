@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TechnicalAssesment
+namespace TechnicalAssesment.Model
 {
-     class Transactions
+    class TransactionModel
     {
         public string Amount { get; set; }
         public string TranscationType { get; set; }
-        public Transactions()
+        public TransactionModel()
         {
 
         }

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TechnicalAssesment
+namespace TechnicalAssesment.Model
 {
-    class Customer
+    class CustomerModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PostCode { get; set; }
-        public Customer()
+        public CustomerModel()
         {
 
         }
