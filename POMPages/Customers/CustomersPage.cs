@@ -17,19 +17,24 @@ namespace TechnicalAssesment.POMPages.Customers
         [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Login')]")]
         IWebElement _btnLogin;
 
-        public CustomersPage()
+        private IWebDriver driver;
+        private WebDriverWait wait;
+        public CustomersPage(IWebDriver driver)
         {
-            PageFactory.InitElements(BasePage.driver, this);
+            this.driver = driver;
+            PageFactory.InitElements(driver, this);
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            
         }
         public void SelectDropDownUser(string user)
         {
-            Thread.Sleep(1000);
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("userSelect")));
             SelectElement select = new SelectElement(_dropdownUser);
             select.SelectByText(user);
         }
         public void clickLogin()
         {
-            Thread.Sleep(1000);
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//button[contains(text(),'Login')]")));
             _btnLogin.Click();
         }
     }

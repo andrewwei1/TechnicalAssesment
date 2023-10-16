@@ -9,30 +9,18 @@ using OpenQA.Selenium.Support.UI;
 
 namespace TechnicalAssesment.POMPages
 {
-    static class BasePage
+     class BasePage
     {
-        public static IWebDriver driver = new ChromeDriver();
-        public static WebDriverWait wait = new WebDriverWait(BasePage.driver, TimeSpan.FromSeconds(10));
-        public static void AcceptAlert()
+         IWebDriver driver;
+        
+        public BasePage(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
+        public void AcceptAlert()
         {
             driver.SwitchTo().Alert().Accept();
         }
-
-        public static void CloseAlert()
-        {
-            driver.SwitchTo().Alert().Dismiss();
-        }
-
-        public static void setImplicitWait(int seconds)
-        {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(seconds);
-        }
-
-        //public static void setExplicitWait(By locator, int seconds)
-        //{
-        //    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
-        //    wait.Until(ExpectedConditions.ElementIsVisible(locator));
-        //}
     }
    
 }

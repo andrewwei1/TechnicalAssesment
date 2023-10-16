@@ -19,3 +19,6 @@ To run the tests, these libraries and dependencies should be installed. Use Nuge
 * Nunit
 * Selenium.WebDriver
 * Selenium.Support
+* DotNetSeleniumExtras.WaitHelpers
+
+To run the tests, navigate to Test > Run All Test

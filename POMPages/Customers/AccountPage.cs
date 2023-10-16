@@ -11,7 +11,7 @@ namespace TechnicalAssesment.POMPages.Customers
 {
     class AccountPage
     {
-        [FindsBy(How = How.Id, Using = "accountSelect")]
+        [FindsBy(How = How.XPath, Using = "//select[@id='accountSelect']")]
         IWebElement _dropdownAccount;
 
         [FindsBy(How = How.XPath, Using = "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[2]/strong[2]")]
@@ -32,14 +32,18 @@ namespace TechnicalAssesment.POMPages.Customers
         [FindsBy(How = How.XPath, Using = "//input[@type='number']")]
         IWebElement _inputAmount;
 
-        public AccountPage()
+        private IWebDriver driver;
+        private WebDriverWait wait;
+        public AccountPage(IWebDriver driver)
         {
-            PageFactory.InitElements(BasePage.driver, this);
+            this.driver = driver;
+            PageFactory.InitElements(driver, this);
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
         public void SelectDropDownAccount(string account)
         {
-            Thread.Sleep(1000);
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//select[@id='accountSelect']")));
             SelectElement select = new SelectElement(_dropdownAccount);
             select.SelectByText(account);
         }
@@ -49,12 +53,12 @@ namespace TechnicalAssesment.POMPages.Customers
         }
         public void ClickDeposit()
         {
-            Thread.Sleep(1000);
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//button[contains(text(),'Deposit')]")));
             _btnDeposit.Click();
         }
         public void ClickWithdrawl()
         {
-            Thread.Sleep(1000);
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//button[contains(text(),'Withdrawl')]")));
             _btnWithdrawl.Click();
         }
         public void InputAmount(string amount)
@@ -68,6 +72,7 @@ namespace TechnicalAssesment.POMPages.Customers
         }
         public void ClickSubmit()
         {
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//button[@type='submit']")));
             _btnSubmit.Click();
         }
     }

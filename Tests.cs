@@ -20,11 +20,14 @@ namespace TechnicalAssesment
 {
     public class Tests
     {
-        private RestClient client;
+        IWebDriver driver;
+        LoginPage loginPage;
+        ManagerPage managerPage;
+        BasePage basePage;
         [SetUp]
         public void Setup()
         {
-            client = new RestClient("https://petstore3.swagger.io/");
+            driver = new ChromeDriver();
         }
 
         [Test]
@@ -33,10 +36,11 @@ namespace TechnicalAssesment
             string[] _fName = { "Jackson", "Christopher" };
             string[] _lName = { "Frank", "Connely" };
 
-            BasePage.driver.Navigate().GoToUrl("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+            driver.Navigate().GoToUrl("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
 
-            LoginPage loginPage = new LoginPage();
-            ManagerPage managerPage = new ManagerPage();
+            loginPage = new LoginPage(driver);
+            managerPage = new ManagerPage(driver);
+            basePage = new BasePage(driver);
 
             loginPage.bankMgrLogin();
 
@@ -53,10 +57,10 @@ namespace TechnicalAssesment
                     managerPage.InputLName(customer.LastName);
                     managerPage.InputPCode(customer.PostCode);
                     managerPage.ClickSubmit();
-                    BasePage.AcceptAlert();
+                    basePage.AcceptAlert();
                     managerPage.ClickCustomers();
                     managerPage.SearchCustomer(customer.FirstName);
-                    managerPage.CheckCustomerExists(customer.FirstName, customer.LastName);
+                    Assert.IsTrue(managerPage.CheckCustomerExists(customer.FirstName, customer.LastName));
                 }
             }
             managerPage.ClickCustomers();
@@ -69,11 +73,11 @@ namespace TechnicalAssesment
         [TestCase ("Hermoine Granger", "1003")]
         public void Question2(string custName, string accNum)
         {
-            BasePage.driver.Navigate().GoToUrl("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+            driver.Navigate().GoToUrl("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
 
-            LoginPage loginPage = new LoginPage();
-            CustomersPage customersPage = new CustomersPage();
-            AccountPage accountPage = new AccountPage();
+            LoginPage loginPage = new LoginPage(driver);
+            CustomersPage customersPage = new CustomersPage(driver);
+            AccountPage accountPage = new AccountPage(driver);
 
             loginPage.loginCust();
             customersPage.SelectDropDownUser(custName);
@@ -118,22 +122,23 @@ namespace TechnicalAssesment
         [TestCase ("username", "BruceWayne","12345", "ClarkKent")]
         public void Question3(string reqParam, string userName,string password, string newUserName)
         {
+            RestClient client = new RestClient("https://petstore3.swagger.io/");
             //Flow 1: CreateUser
-            Login(userName, "12345");
-            CreateUser();
+            Login(client,userName, "12345");
+            CreateUser(client);
             //Flow 2: GetUserByName
-            string initialUsername = ReadUser(reqParam, userName);
+            string initialUsername = ReadUser(client, reqParam, userName);
             //Flow 3: UpdateUser
-            string updatedUserName = UpdateUsername(reqParam, initialUsername, newUserName);
+            string updatedUserName = UpdateUsername(client, reqParam, initialUsername, newUserName);
             //Flow 4: ReadUpdatedUser
             Assert.IsTrue(updatedUserName == initialUsername, "The username has been updated from " + initialUsername + " to " + updatedUserName + " succesfully");
             //Flow 5: DeleteUser
-            DeleteUser(reqParam, updatedUserName);
+            DeleteUser(client, reqParam, updatedUserName);
             //Flow 6: ReadDeletedUser
-            ReadUser(reqParam, updatedUserName);
+            ReadUser(client, reqParam, updatedUserName);
 
         }
-        public void Login(string userName, string password)
+        public void Login(RestClient client, string userName, string password)
         {
             var request = new RestRequest("#/user/loginUser", Method.Get);
             request.AddParameter("username", userName);
@@ -143,7 +148,7 @@ namespace TechnicalAssesment
             Assert.IsTrue(response.StatusCode == System.Net.HttpStatusCode.OK);
         }
 
-        public void CreateUser()
+        public void CreateUser(RestClient client)
         {
             var newUser = new
             {
@@ -167,7 +172,7 @@ namespace TechnicalAssesment
             Assert.IsTrue(response.StatusCode == System.Net.HttpStatusCode.OK, "The error code is: " + (int)response.StatusCode + response.StatusCode);
         }
 
-        public string ReadUser(string reqParam,string username)
+        public string ReadUser(RestClient client,string reqParam,string username)
         {
             var reqGetUser = new RestRequest("#/user/getUserByName", Method.Get);
             reqGetUser.AddParameter(reqParam, username);
@@ -191,7 +196,7 @@ namespace TechnicalAssesment
             return initialResponseObj.username;
         }
 
-        public string UpdateUsername(string reqParam, string userName, string newUserName)
+        public string UpdateUsername(RestClient client, string reqParam, string userName, string newUserName)
         {
             // Update the username
             var updateUsername = new
@@ -209,7 +214,7 @@ namespace TechnicalAssesment
             return updateResponseObj.username;
 
         }
-        public void DeleteUser(string reqParam, string userName)
+        public void DeleteUser(RestClient client, string reqParam, string userName)
         {
             var reqDeleteUser = new RestRequest("#/user/deleteUser", Method.Delete);
             reqDeleteUser.AddParameter(reqParam, userName);
@@ -221,8 +226,8 @@ namespace TechnicalAssesment
         [TearDown]
         public void tearDown()
         {
-            BasePage.driver.Close();
-            BasePage.driver.Quit();
+            driver.Close();
+            driver.Quit();
         }
     }
 }

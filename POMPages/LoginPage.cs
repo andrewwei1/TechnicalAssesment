@@ -16,20 +16,25 @@ namespace TechnicalAssesment.POMPages
 
         [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Bank Manager Login')]")]
         IWebElement _btnManagerLogin;
+        
+        private IWebDriver driver;
+        private WebDriverWait wait;
 
-        public LoginPage()
-        {
-            PageFactory.InitElements(BasePage.driver, this);
+        public LoginPage(IWebDriver driver)
+        {   
+            this.driver = driver;
+            PageFactory.InitElements(driver, this);
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
         public void loginCust()
         {
-            BasePage.setImplicitWait(1);
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//button[contains(text(),'Customer Login')]")));
             _btnCustLogin.Click();
         }
 
         public void bankMgrLogin()
         {
-            BasePage.setImplicitWait(1);
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//button[contains(text(),'Bank Manager Login')]")));
             _btnManagerLogin.Click();
         }
     }
