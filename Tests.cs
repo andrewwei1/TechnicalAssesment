@@ -129,7 +129,6 @@ namespace TechnicalAssesment
             Assert.IsTrue(updatedUserName == initialUsername, "The username has been updated from " + initialUsername + " to " + updatedUserName + " succesfully");
             //Flow 5: DeleteUser
             DeleteUser(reqParam, updatedUserName);
-            DeleteUser(reqParam, userName);
             //Flow 6: ReadDeletedUser
             ReadUser(reqParam, updatedUserName);
 
@@ -158,6 +157,7 @@ namespace TechnicalAssesment
                 userStatus = 1
             };
             var request = new RestRequest("#/user/createUser", Method.Post);
+            request.AddHeader("Content-Type", "application/json");
             request.AddBody(newUser);
             RestResponse response = client.Execute(request);
             Console.WriteLine("Request URL: " + client.BuildUri(request)); // Log the full URL being used
