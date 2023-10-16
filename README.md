@@ -12,7 +12,7 @@ This project is created in C# and best run on Visual Studio 2022
 
 
 ## Run Tests
-To run the tests, these libraries and dependencies should be installed. Use Nuget Package Manager to install:
+Before running the tests, these libraries and dependencies should be installed. Use Nuget Package Manager to install:
 
 * CsvHelper
 * DotNetSeleniumExtras.PageObjects.Core
@@ -22,3 +22,6 @@ To run the tests, these libraries and dependencies should be installed. Use Nuge
 * DotNetSeleniumExtras.WaitHelpers
 
 To run the tests, navigate to Test > Run All Test
+
+## Test Reports
+The report of the test can be found in Technical Assessment Test Report.docx
